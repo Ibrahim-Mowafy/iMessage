@@ -1,0 +1,17 @@
+{
+  "name": "imessage-server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "apollo-server-core": "^3.10.2",
+    "apollo-server-express": "^3.10.2",
+    "express": "^4.18.2",
+    "graphql": "^16.6.0"
+  }
+}
