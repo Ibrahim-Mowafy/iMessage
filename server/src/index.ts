@@ -3,15 +3,20 @@ import {
   ApolloServerPluginDrainHttpServer,
   ApolloServerPluginLandingPageLocalDefault,
 } from 'apollo-server-core';
+import { makeExecutableSchema } from '@graphql-tools/schema';
 import express from 'express';
 import http from 'http';
+import typeDefs from '../graphql/typeDefs';
+import resolvers from '../graphql/resolvers';
 
-async function main(typeDefs, resolvers) {
+async function main() {
   const app = express();
   const httpServer = http.createServer(app);
+
+  const schema = makeExecutableSchema({ typeDefs, resolvers });
+
   const server = new ApolloServer({
-    typeDefs,
-    resolvers,
+    schema,
     csrfPrevention: true,
     cache: 'bounded',
     plugins: [
