@@ -15,7 +15,8 @@
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
     "graphql": "^16.6.0",
-    "lodash.merge": "^4.6.2"
+    "lodash.merge": "^4.6.2",
+    "next-auth": "^4.19.2"
   },
   "devDependencies": {
     "@types/lodash.merge": "^4.6.7",
