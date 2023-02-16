@@ -1,3 +1,4 @@
+import { PrismaClient } from '@prisma/client';
 import { GraphQLContext } from './util/types';
 import { ApolloServer } from 'apollo-server-express';
 import {
@@ -21,13 +22,15 @@ async function main() {
 
   const corsOptions = { origin: process.env.CLIENT_ORIGIN, credentials: true };
 
+  const prisma = new PrismaClient();
+
   const server = new ApolloServer({
     schema,
     csrfPrevention: true,
     cache: 'bounded',
     context: async ({ req, res }): Promise<GraphQLContext> => {
       const session = await getSession({ req: req });
-      return { session };
+      return { session, prisma };
     },
     plugins: [
       ApolloServerPluginDrainHttpServer({ httpServer }),
