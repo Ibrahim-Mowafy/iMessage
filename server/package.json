@@ -10,6 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "@graphql-tools/schema": "^8.5.0",
+    "@prisma/client": "^4.10.1",
     "apollo-server-core": "^3.10.2",
     "apollo-server-express": "^3.10.2",
     "dotenv": "^16.0.3",
