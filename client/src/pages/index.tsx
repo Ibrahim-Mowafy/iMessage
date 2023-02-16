@@ -3,13 +3,13 @@ import Chat from '@/components/Chat/Chat';
 import { Box } from '@chakra-ui/react';
 import type { NextPage, NextPageContext } from 'next';
 import { getSession, useSession } from 'next-auth/react';
-import { Session } from 'next-auth';
 
 const Home: NextPage = () => {
   const { data: session } = useSession();
-  console.log(session?.user);
-  const reloadSession = () => {};
-
+  const reloadSession = () => {
+    const event = new Event('visibilitychange');
+    document.dispatchEvent(event);
+  };
   return (
     <Box>
       {session?.user.username ? (
