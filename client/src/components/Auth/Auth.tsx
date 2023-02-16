@@ -4,6 +4,7 @@ import { Button, Center, Image, Input, Stack, Text } from '@chakra-ui/react';
 import { Session } from 'next-auth';
 import { signIn } from 'next-auth/react';
 import { useState } from 'react';
+import toast from 'react-hot-toast';
 import UserMutation from '../../graphql/operations/user';
 
 interface IAuthProps {
@@ -22,9 +23,27 @@ const Auth: React.FC<IAuthProps> = ({ session, reloadSession }) => {
   const onSubmit = async () => {
     if (!username) return;
     try {
-      await createUsername({ variables: { username } });
-      console.log('🚀 ~ file: Auth.tsx:25', data);
+      const { data } = await createUsername({ variables: { username } });
+      if (!data?.createUsername) {
+        throw new Error();
+      }
+
+      if (data.createUsername.error) {
+        const {
+          createUsername: { error },
+        } = data;
+
+        toast.error(error);
+        return;
+      }
+      toast.success('Username successfully created');
+
+      /**
+       * Reload session to obtain new username
+       */
+      reloadSession();
     } catch (error) {
+      toast.error('There was an error');
       console.log('onSubmit error', error);
     }
   };
