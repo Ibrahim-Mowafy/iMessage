@@ -1,3 +1,4 @@
+import { GraphQLContext } from './util/types';
 import { ApolloServer } from 'apollo-server-express';
 import {
   ApolloServerPluginDrainHttpServer,
@@ -6,8 +7,9 @@ import {
 import { makeExecutableSchema } from '@graphql-tools/schema';
 import express from 'express';
 import http from 'http';
-import typeDefs from '../graphql/typeDefs';
-import resolvers from '../graphql/resolvers';
+import typeDefs from './graphql/typeDefs';
+import resolvers from './graphql/resolvers';
+import { getSession } from 'next-auth/react';
 import * as dotenv from 'dotenv';
 
 async function main() {
@@ -23,6 +25,10 @@ async function main() {
     schema,
     csrfPrevention: true,
     cache: 'bounded',
+    context: async ({ req, res }): Promise<GraphQLContext> => {
+      const session = await getSession({ req: req });
+      return { session };
+    },
     plugins: [
       ApolloServerPluginDrainHttpServer({ httpServer }),
       ApolloServerPluginLandingPageLocalDefault({ embed: true }),
