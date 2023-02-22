@@ -14,6 +14,7 @@ import {
 import React, { useState } from 'react';
 
 import userOperation from '@/graphql/operations/user';
+import UserSearchList from '../UserSearchList';
 interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -31,8 +32,6 @@ const ConversationModal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
     if (!username) return;
     searchUsers({ variables: { username } });
   };
-
-  console.log('here is the data', data);
 
   return (
     <>
@@ -58,6 +57,7 @@ const ConversationModal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
                 </Button>
               </Stack>
             </form>
+            {data?.searchUsers && <UserSearchList users={data.searchUsers} />}
           </ModalBody>
         </ModalContent>
       </Modal>

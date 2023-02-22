@@ -11,10 +11,10 @@ export interface SearchUsersInput {
 }
 
 export interface SearchUserData {
-  searchUsers: Array<SearchUser>;
+  searchUsers: Array<SearchedUser>;
 }
 
-export interface SearchUser {
+export interface SearchedUser {
   id: string;
   username: string;
 }
