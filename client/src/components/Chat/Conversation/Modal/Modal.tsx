@@ -1,4 +1,4 @@
-import { SearchUserData, SearchUsersInput } from '@/util/types';
+import { SearchedUser, SearchUserData, SearchUsersInput } from '@/util/types';
 import { useLazyQuery } from '@apollo/client';
 import {
   Button,
@@ -15,6 +15,7 @@ import React, { useState } from 'react';
 
 import userOperation from '@/graphql/operations/user';
 import UserSearchList from '../UserSearchList';
+import Participants from '../Participants';
 interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -22,6 +23,7 @@ interface ModalProps {
 
 const ConversationModal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
   const [username, setUsername] = useState('');
+  const [participants, setParticipants] = useState<Array<SearchedUser>>([]);
   const [searchUsers, { data, error, loading }] = useLazyQuery<
     SearchUserData,
     SearchUsersInput
@@ -31,6 +33,15 @@ const ConversationModal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
     event.preventDefault();
     if (!username) return;
     searchUsers({ variables: { username } });
+  };
+
+  const addParticipant = (user: SearchedUser) => {
+    setParticipants((prev) => [...prev, user]);
+    setUsername('');
+  };
+
+  const removeParticipant = (userId: string) => {
+    setParticipants((prev) => prev.filter((p) => p.id !== userId));
   };
 
   return (
@@ -57,7 +68,18 @@ const ConversationModal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
                 </Button>
               </Stack>
             </form>
-            {data?.searchUsers && <UserSearchList users={data.searchUsers} />}
+            {data?.searchUsers && (
+              <UserSearchList
+                users={data.searchUsers}
+                addParticipant={addParticipant}
+              />
+            )}
+            {participants.length !== 0 && (
+              <Participants
+                participants={participants}
+                removeParticipant={removeParticipant}
+              />
+            )}
           </ModalBody>
         </ModalContent>
       </Modal>
