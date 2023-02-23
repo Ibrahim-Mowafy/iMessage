@@ -6,11 +6,11 @@ const resolvers = {
   Mutation: {
     createConversation: async (
       _: any,
-      args: { participantsIds: Array<string> },
+      args: { participantIds: Array<string> },
       context: GraphQLContext
     ): Promise<{ conversationId: string }> => {
       const { session, prisma } = context;
-      const { participantsIds } = args;
+      const { participantIds } = args;
 
       if (!session?.user) {
         throw new ApolloError('Not authorized');
@@ -26,7 +26,7 @@ const resolvers = {
           data: {
             participants: {
               createMany: {
-                data: participantsIds.map((id) => ({
+                data: participantIds.map((id) => ({
                   userId: id,
                   hasSeenLatestMessage: id === userId,
                 })),
