@@ -7,7 +7,7 @@ interface ConversationListProps {
   session: Session;
 }
 
-const ConversationList: React.FC<ConversationListProps> = (props) => {
+const ConversationList: React.FC<ConversationListProps> = ({ session }) => {
   const [isOpen, setIsOpen] = useState(false);
   const onOpen = () => setIsOpen(true);
   const onClose = () => setIsOpen(false);
@@ -26,7 +26,7 @@ const ConversationList: React.FC<ConversationListProps> = (props) => {
           Find or start a conversation
         </Text>
       </Box>
-      <ConversationModal isOpen={isOpen} onClose={onClose} />
+      <ConversationModal session={session} isOpen={isOpen} onClose={onClose} />
     </Box>
   );
 };
