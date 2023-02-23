@@ -19,12 +19,13 @@ import {
 } from '@chakra-ui/react';
 import React, { useState } from 'react';
 
-import userOperation from '@/graphql/operations/user';
 import conversationOperation from '@/graphql/operations/conversation';
-import UserSearchList from '../UserSearchList';
-import Participants from '../Participants';
-import { toast } from 'react-hot-toast';
+import userOperation from '@/graphql/operations/user';
 import { Session } from 'next-auth';
+import { useRouter } from 'next/router';
+import { toast } from 'react-hot-toast';
+import Participants from '../Participants';
+import UserSearchList from '../UserSearchList';
 interface ModalProps {
   session: Session;
   isOpen: boolean;
@@ -39,6 +40,8 @@ const ConversationModal: React.FC<ModalProps> = ({
   const {
     user: { id: userId },
   } = session;
+
+  const router = useRouter();
 
   const [username, setUsername] = useState('');
   const [participants, setParticipants] = useState<Array<SearchedUser>>([]);
@@ -72,7 +75,23 @@ const ConversationModal: React.FC<ModalProps> = ({
       const { data } = await createConversation({
         variables: { participantIds },
       });
-      console.log(data);
+
+      if (!data?.createConversation) {
+        throw new Error('Failed to create conversation');
+      }
+
+      const {
+        createConversation: { conversationId },
+      } = data;
+
+      router.push({ query: { conversationId } });
+      /**
+       * Clear state and close modal
+       * on successful creation
+       */
+      setParticipants([]);
+      setUsername('');
+      onClose();
     } catch (error: any) {
       console.log('onCreateConversation', error);
       toast.error(error?.message);
