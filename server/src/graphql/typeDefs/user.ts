@@ -1,6 +1,15 @@
 import { gql } from 'apollo-server-core';
 
 const typeDefs = gql`
+  type User {
+    id: String
+    name: String
+    email: String
+    emailVerified: String
+    username: String
+    image: String
+  }
+
   type searchedUser {
     id: String
     username: String
