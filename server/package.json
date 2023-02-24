@@ -9,19 +9,23 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@graphql-tools/schema": "^8.5.0",
+    "@graphql-tools/schema": "^8.5.1",
     "@prisma/client": "^4.10.1",
     "apollo-server-core": "^3.10.2",
     "apollo-server-express": "^3.10.2",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
     "graphql": "^16.6.0",
+    "graphql-subscriptions": "^2.0.0",
+    "graphql-ws": "^5.11.3",
     "lodash.merge": "^4.6.2",
     "next-auth": "^4.19.2",
-    "prisma": "^4.10.1"
+    "prisma": "^4.10.1",
+    "ws": "^8.12.1"
   },
   "devDependencies": {
     "@types/lodash.merge": "^4.6.7",
+    "@types/ws": "^8.5.4",
     "nodemon": "^2.0.18",
     "ts-node": "^10.8.2",
     "typescript": "^4.8.3"
