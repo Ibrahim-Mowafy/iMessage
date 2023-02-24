@@ -59,7 +59,7 @@ const resolvers = {
       args: { participantIds: Array<string> },
       context: GraphQLContext
     ): Promise<{ conversationId: string }> => {
-      const { session, prisma } = context;
+      const { session, prisma, pubsub } = context;
       const { participantIds } = args;
 
       if (!session?.user) {
@@ -85,11 +85,24 @@ const resolvers = {
           },
           include: conversationPopulated,
         });
+
+        pubsub.publish('CONVERSATION_CREATED', {
+          conversationCreated: conversation,
+        });
+
         return { conversationId: conversation.id };
       } catch (error) {
         console.log('createConversation', error);
         throw new ApolloError('Error creating conversation');
       }
+    },
+  },
+  Subscription: {
+    conversationCreated: {
+      subscribe: (_: any, __: any, context: GraphQLContext) => {
+        const { pubsub } = context;
+        pubsub.asyncIterator(['CONVERSATION_CREATED']);
+      },
     },
   },
 };
