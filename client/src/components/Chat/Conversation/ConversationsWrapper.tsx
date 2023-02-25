@@ -6,6 +6,7 @@ import ConversationList from './ConversationList';
 import { ConversationData } from '@/util/types';
 import { ConversationsPopulated } from '../../../../../server/src/util/types';
 import { useEffect } from 'react';
+import { useRouter } from 'next/router';
 
 interface ConversationsWrapperProps {
   session: Session;
@@ -22,16 +23,25 @@ const ConversationsWrapper: React.FC<ConversationsWrapperProps> = ({
   } = useQuery<ConversationData, null>(
     ConversationOperations.Queries.conversations
   );
+  const router = useRouter();
+  const {
+    query: { conversationId },
+  } = router;
 
-  console.log('Query data', conversationData);
+  const onViewConversation = async (conversationId: string) => {
+    /**
+     * 1. Push the conversationId to the router query params
+     */
+    router.push({ query: { conversationId } });
+    /**
+     * 2. Mark the conversation as read
+     */
+  };
 
   const subscribeToNewConversations = () => {
     subscribeToMore({
       document: ConversationOperations.Subscriptions.conversationCreated,
-      updateQuery: (
-        prev,
-        { subscriptionData }: ConversationsPopulated
-      ) => {
+      updateQuery: (prev, { subscriptionData }: ConversationsPopulated) => {
         if (!subscriptionData.data) return prev;
 
         const newConversation = subscriptionData.data.conversationCreated;
@@ -52,6 +62,7 @@ const ConversationsWrapper: React.FC<ConversationsWrapperProps> = ({
 
   return (
     <Box
+      display={{ base: conversationId ? 'none' : 'flex', md: 'flex' }}
       width={{
         base: '100%',
         md: '400px',
@@ -64,6 +75,7 @@ const ConversationsWrapper: React.FC<ConversationsWrapperProps> = ({
       <ConversationList
         session={session}
         conversations={conversationData?.conversations || []}
+        onViewConversation={onViewConversation}
       />
     </Box>
   );
