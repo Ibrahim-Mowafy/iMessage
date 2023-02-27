@@ -7,6 +7,7 @@ import { ConversationData } from '@/util/types';
 import { ConversationsPopulated } from '../../../../../server/src/util/types';
 import { useEffect } from 'react';
 import { useRouter } from 'next/router';
+import SkeletonLoader from '@/components/common/SkeletonLoader';
 
 interface ConversationsWrapperProps {
   session: Session;
@@ -68,15 +69,20 @@ const ConversationsWrapper: React.FC<ConversationsWrapperProps> = ({
         md: '400px',
       }}
       bg="whiteAlpha.50"
+      flexDirection="column"
+      gap={4}
       py={6}
       px={3}
     >
-      {/* Skeleton Loader */}
-      <ConversationList
-        session={session}
-        conversations={conversationData?.conversations || []}
-        onViewConversation={onViewConversation}
-      />
+      {conversationLoading ? (
+        <SkeletonLoader count={7} height="80px" />
+      ) : (
+        <ConversationList
+          session={session}
+          conversations={conversationData?.conversations || []}
+          onViewConversation={onViewConversation}
+        />
+      )}
     </Box>
   );
 };
