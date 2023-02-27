@@ -48,7 +48,6 @@ const ConversationList: React.FC<ConversationListProps> = ({
           onClick={() => onViewConversation(conversation.id)}
           isSelected={conversation.id === router.query.conversationId}
           userId={userId}
-          
         />
       ))}
     </Box>

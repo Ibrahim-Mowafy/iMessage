@@ -9,6 +9,7 @@ import { Flex, Stack } from '@chakra-ui/react';
 import { useEffect } from 'react';
 import { toast } from 'react-hot-toast';
 import MessageOperations from '../../../../graphql/operations/message';
+import MessageItem from './MessageItem';
 
 interface MessagesProps {
   userId: string;
@@ -47,8 +48,6 @@ const Messages: React.FC<MessagesProps> = ({ userId, conversationId }) => {
     });
   };
 
-  
-  
   useEffect(() => {
     subscribeToMoreMessages(conversationId);
     return () => {};
@@ -65,8 +64,10 @@ const Messages: React.FC<MessagesProps> = ({ userId, conversationId }) => {
       {data?.messages && (
         <Flex direction="column-reverse" overflowY="scroll" height="100%">
           {data.messages.map((message) => (
-            // <MessageItem />
-            <div>{message.body}</div>
+            <MessageItem
+              message={message}
+              sentByMe={message.sender.id === userId}
+            />
           ))}
         </Flex>
       )}
