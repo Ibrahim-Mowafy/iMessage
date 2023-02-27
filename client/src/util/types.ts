@@ -1,4 +1,7 @@
-import { ConversationsPopulated } from '../../../server/src/util/types';
+import {
+  ConversationsPopulated,
+  MessagePopulated,
+} from '../../../server/src/util/types';
 
 /**
  * Users
@@ -39,4 +42,22 @@ export interface CreateConversationData {
 
 export interface CreateConversationInput {
   participantIds: Array<string>;
+}
+
+/**
+ * Messages
+ */
+export interface MessagesData {
+  messages: Array<MessagePopulated>;
+}
+export interface MessagesVariables {
+  conversationId: string;
+}
+
+export interface MessageSubscriptionData {
+  subscriptionData: {
+    data: {
+      messageSent: MessagePopulated;
+    };
+  };
 }
