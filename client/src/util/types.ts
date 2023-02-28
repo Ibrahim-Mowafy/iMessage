@@ -44,6 +44,14 @@ export interface CreateConversationInput {
   participantIds: Array<string>;
 }
 
+export interface ConversationUpdatedData {
+  conversationUpdated: {
+    conversation: Omit<ConversationsPopulated, 'latestMessage'> & {
+      latestMessage: MessagePopulated;
+    };
+  };
+}
+
 /**
  * Messages
  */
