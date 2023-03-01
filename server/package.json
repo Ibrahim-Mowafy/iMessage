@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "node dist/index.js",
-    "build": "tsc &&prisma generate --schema=./src/prisma/schema.prisma",
+    "postinstall": "prisma generate --schema=./src/prisma/schema.prisma",
+    "build": "tsc",
     "dev": "nodemon src/index.ts"
   },
   "author": "",
