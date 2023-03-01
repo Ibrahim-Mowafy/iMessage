@@ -12,7 +12,7 @@ interface ConversationListProps {
   conversations: Array<ConversationsPopulated>;
   onViewConversation: (
     conversationId: string,
-    hasSeenLatestMessage: boolean
+    hasSeenLatestMessage: boolean | undefined
   ) => void;
 }
 

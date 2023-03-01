@@ -3,7 +3,13 @@ import { gql, useMutation, useQuery, useSubscription } from '@apollo/client';
 import { Box } from '@chakra-ui/react';
 import { Session } from 'next-auth';
 import ConversationList from './ConversationList';
-import { ConversationData, ConversationsPopulated, ConversationUpdatedData, ParticipantPopulated } from '@/util/types';
+import {
+  ConversationCreatedSubscriptionData,
+  ConversationData,
+  ConversationsPopulated,
+  ConversationUpdatedData,
+  ParticipantPopulated,
+} from '@/util/types';
 // import {
 //   ConversationsPopulated,
 //   ParticipantPopulated,
@@ -32,7 +38,7 @@ const ConversationsWrapper: React.FC<ConversationsWrapperProps> = ({
     error: conversationError,
     loading: conversationLoading,
     subscribeToMore,
-  } = useQuery<ConversationData, null>(
+  } = useQuery<ConversationData, any>(
     ConversationOperations.Queries.conversations
   );
 
@@ -41,7 +47,7 @@ const ConversationsWrapper: React.FC<ConversationsWrapperProps> = ({
     { userId: string; conversationId: string }
   >(ConversationOperations.Mutation.markConversationAsRead);
 
-  useSubscription<ConversationUpdatedData, null>(
+  useSubscription<ConversationUpdatedData, any>(
     ConversationOperations.Subscriptions.conversationUpdated,
     {
       onData: ({ client, data }) => {
@@ -65,7 +71,7 @@ const ConversationsWrapper: React.FC<ConversationsWrapperProps> = ({
 
   const onViewConversation = async (
     conversationId: string,
-    hasSeenLatestMessage: boolean
+    hasSeenLatestMessage: boolean | undefined
   ) => {
     /**
      * 1. Push the conversationId to the router query params
@@ -156,7 +162,10 @@ const ConversationsWrapper: React.FC<ConversationsWrapperProps> = ({
   const subscribeToNewConversations = () => {
     subscribeToMore({
       document: ConversationOperations.Subscriptions.conversationCreated,
-      updateQuery: (prev, { subscriptionData }: ConversationsPopulated) => {
+      updateQuery: (
+        prev,
+        { subscriptionData }: ConversationCreatedSubscriptionData
+      ) => {
         if (!subscriptionData.data) return prev;
 
         const newConversation = subscriptionData.data.conversationCreated;
