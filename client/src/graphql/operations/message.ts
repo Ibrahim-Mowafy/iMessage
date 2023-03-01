@@ -1,4 +1,5 @@
 import { gql } from '@apollo/client';
+import { Prisma } from '@prisma/client';
 
 export const MessageFields = `
   id
@@ -47,3 +48,12 @@ export default {
     `,
   },
 };
+
+export const messagePopulated = Prisma.validator<Prisma.MessageInclude>()({
+  sender: {
+    select: {
+      id: true,
+      username: true,
+    },
+  },
+});

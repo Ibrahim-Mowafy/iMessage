@@ -5,8 +5,8 @@ import { Session } from 'next-auth';
 import { useState } from 'react';
 import { ObjectID } from 'bson';
 import { toast } from 'react-hot-toast';
-import { SendMessageArguments } from '../../../../../../server/src/util/types';
-import { MessagesData } from '@/util/types';
+// import { SendMessageArguments } from '../../../../../../server/src/util/types';
+import { MessagesData, SendMessageArguments } from '@/util/types';
 
 interface MessageInputProps {
   session: Session;

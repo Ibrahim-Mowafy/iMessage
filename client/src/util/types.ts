@@ -1,7 +1,9 @@
 import {
-  ConversationsPopulated,
-  MessagePopulated,
-} from '../../../server/src/util/types';
+  conversationPopulated,
+  participantPopulated,
+} from '@/graphql/operations/conversation';
+import { messagePopulated } from '@/graphql/operations/message';
+import { Prisma } from '@prisma/client';
 
 /**
  * Users
@@ -30,6 +32,14 @@ export interface SearchedUser {
 /**
  * Conversations
  */
+
+export type ConversationsPopulated = Prisma.ConversationGetPayload<{
+  include: typeof conversationPopulated;
+}>;
+
+export type ParticipantPopulated = Prisma.ConversationParticipantGetPayload<{
+  include: typeof participantPopulated;
+}>;
 
 export interface ConversationData {
   conversations: Array<ConversationsPopulated>;
@@ -62,6 +72,13 @@ export interface MessagesVariables {
   conversationId: string;
 }
 
+export interface SendMessageArguments {
+  id: string;
+  conversationId: string;
+  senderId: string;
+  body: string;
+}
+
 export interface MessageSubscriptionData {
   subscriptionData: {
     data: {
@@ -69,3 +86,7 @@ export interface MessageSubscriptionData {
     };
   };
 }
+
+export type MessagePopulated = Prisma.MessageGetPayload<{
+  include: typeof messagePopulated;
+}>;
