@@ -108,7 +108,7 @@ const main = async () => {
 
   // server.applyMiddleware({ app, path: "/graphql", cors: corsOptions });
 
-  const PORT = 4000;
+  const PORT = process.env.PORT || 4000;
 
   // Now that our HTTP server is fully set up, we can listen to it.
   await new Promise<void>((resolve) =>
