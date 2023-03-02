@@ -16,6 +16,8 @@ import resolvers from './graphql/resolvers';
 import typeDefs from './graphql/typeDefs';
 import { GraphQLContext, Session, SubscriptionContext } from './util/types';
 
+import './lib/fetch-polyfill';
+
 const main = async () => {
   dotenv.config();
   // Create the schema, which will be used separately by ApolloServer and
