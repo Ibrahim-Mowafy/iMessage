@@ -17,7 +17,6 @@ import typeDefs from './graphql/typeDefs';
 import { GraphQLContext, Session, SubscriptionContext } from './util/types';
 
 import './lib/fetch-polyfill';
-import { getServerSession } from 'next-auth';
 
 const main = async () => {
   dotenv.config();
@@ -102,8 +101,8 @@ const main = async () => {
     json(),
     expressMiddleware(server, {
       context: async ({ req }): Promise<GraphQLContext> => {
-        // const session = await getSession({ req });
-        const session = await getServerSession(req);
+        const session = await getSession({ req });
+        // const session = await getServerSession(req,res);
 
         console.log('session context', session);
 
